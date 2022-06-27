@@ -5,12 +5,10 @@ import eu.tuto.newscorner.data.model.APIResponse
 import eu.tuto.newscorner.data.repository.dataSource.NewsRemoteDataSource
 import retrofit2.Response
 
-class RemoteDataSourceImpl(
-    private val newsAPIService: NewsAPIService,
-    private val country: String,
-    private val page: Int
+class NewsRemoteDataSourceImpl(
+    private val newsAPIService: NewsAPIService
 ) : NewsRemoteDataSource {
-    override suspend fun getTopHeadlines(): Response<APIResponse> {
+    override suspend fun getTopHeadlines(country: String, page: Int): Response<APIResponse> {
         return newsAPIService.getToHeadlines(country, page)
     }
 }
