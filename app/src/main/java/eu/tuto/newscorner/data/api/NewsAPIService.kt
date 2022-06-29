@@ -1,7 +1,6 @@
 package eu.tuto.newscorner.data.api
 
 
-
 import eu.tuto.newscorner.BuildConfig
 import eu.tuto.newscorner.data.model.APIResponse
 import retrofit2.Response
@@ -14,6 +13,18 @@ interface NewsAPIService {
     suspend fun getToHeadlines(
         @Query("country")
         country: String,
+        @Query("page")
+        page: Int,
+        @Query("apiKey")
+        apiKey: String = BuildConfig.API_KEY
+    ): Response<APIResponse>
+
+    @GET("/v2/top-headlines")
+    suspend fun getSearchedToHeadlines(
+        @Query("country")
+        country: String,
+        @Query("q")
+        searchQuery: String,
         @Query("page")
         page: Int,
         @Query("apiKey")

@@ -12,13 +12,16 @@ import androidx.lifecycle.viewModelScope
 import eu.tuto.newscorner.data.model.APIResponse
 import eu.tuto.newscorner.data.util.Resource
 import eu.tuto.newscorner.domain.usecase.GetNewsHeadlinesUseCase
+import eu.tuto.newscorner.domain.usecase.GetSearchedNewsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.http.Query
 import java.lang.Exception
 
 class NewsViewModel(
     private val app: Application,
-    private val getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase
+    private val getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase,
+    private val getSearchedNewsUseCase: GetSearchedNewsUseCase
 ) : AndroidViewModel(app) {
     val newsHeadLines: MutableLiveData<Resource<APIResponse>> = MutableLiveData()
 
@@ -34,7 +37,7 @@ class NewsViewModel(
             } else {
                 newsHeadLines.postValue(Resource.Error("Brak dostępu do internetu"))
             }
-        }catch (e:Exception) {
+        } catch (e: Exception) {
             newsHeadLines.postValue(Resource.Error(e.message.toString()))
         }
     }
@@ -62,6 +65,7 @@ class NewsViewModel(
             }
         } else {
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
+
             if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
                 return true
             }
@@ -70,5 +74,29 @@ class NewsViewModel(
 
     }
 
+    //search
+    val searchedNews: MutableLiveData<Resource<APIResponse>> = MutableLiveData()
+    fun searchNews(
+        country: String,
+        searchQuery: String,
+        page: Int
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        try {
+            searchedNews.postValue(Resource.Loading())
+            if (isNetworkAvailable(app)) {
+                val response = getSearchedNewsUseCase.execute(
+                    country,
+                    searchQuery,
+                    page
+                )
+                searchedNews.postValue(response)
+            } else {
+                searchedNews.postValue(Resource.Error("Brak Połączenia z internetem"))
+            }
 
+        } catch (e: Exception) {
+            searchedNews.postValue(Resource.Error(e.message.toString()))
+        }
+
+    }
 }

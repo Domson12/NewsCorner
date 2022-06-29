@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import eu.tuto.newscorner.domain.usecase.GetNewsHeadlinesUseCase
+import eu.tuto.newscorner.domain.usecase.GetSearchedNewsUseCase
 import eu.tuto.newscorner.presentation.viewmodel.NewsViewModelFactory
 import javax.inject.Singleton
 
@@ -17,11 +18,13 @@ class FactoryModule {
     @Provides
     fun provideNewsViewModelFactory(
         application: Application,
-        getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase
+        getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase,
+        getSearchedNewsUseCase: GetSearchedNewsUseCase
     ): NewsViewModelFactory {
         return NewsViewModelFactory(
             application,
-            getNewsHeadlinesUseCase
+            getNewsHeadlinesUseCase,
+            getSearchedNewsUseCase
         )
     }
 }

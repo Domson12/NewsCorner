@@ -20,6 +20,9 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv_news"
         android:layout_width="match_parent"
+        android:background="@color/search_background"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
         app:itemIconSize="@dimen/_23sdp"
         android:layout_height="75dp"
         app:menu="@menu/bottom_menu" />

@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import eu.tuto.newscorner.domain.repository.NewsRepository
 import eu.tuto.newscorner.domain.usecase.GetNewsHeadlinesUseCase
+import eu.tuto.newscorner.domain.usecase.GetSearchedNewsUseCase
 import javax.inject.Singleton
 
 @Module
@@ -18,5 +19,14 @@ class UseCaseModule {
         newsRepository: NewsRepository
     ): GetNewsHeadlinesUseCase {
         return GetNewsHeadlinesUseCase(newsRepository)
+    }
+
+
+    @Singleton
+    @Provides
+    fun provideSearchedNewsUseCase(
+        newsRepository: NewsRepository
+    ): GetSearchedNewsUseCase {
+        return GetSearchedNewsUseCase(newsRepository)
     }
 }
