@@ -9,4 +9,5 @@
     <string name="saved_news">Zapisane</string>
     <string name="article_image">article image</string>
     <string name="description">DESCRIPTION</string>
+    <string name="save">save</string>
 </resources>

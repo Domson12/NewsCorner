@@ -9,10 +9,13 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import eu.tuto.newscorner.databinding.FragmentInfoBinding
+import eu.tuto.newscorner.presentation.viewmodel.NewsViewModel
 
 class InfoFragment : Fragment() {
     private lateinit var fragmentInfoBinding: FragmentInfoBinding
+    private lateinit var viewModel: NewsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +31,7 @@ class InfoFragment : Fragment() {
         val args: InfoFragmentArgs by navArgs()
         val article = args.selectedArticle
         val progressBar = fragmentInfoBinding.infoProgressBar
+        viewModel = (activity as MainActivity).viewModel
 
         fragmentInfoBinding.wwInfo.apply {
             webViewClient = object : WebViewClient() {
@@ -44,6 +48,11 @@ class InfoFragment : Fragment() {
 
             if (article.url?.isNotEmpty() == true) {
                 loadUrl(article.url.toString())
+            }
+            fragmentInfoBinding.fabSave.setOnClickListener {
+                viewModel.saveArticle(article)
+
+                Snackbar.make(view, "Zapisano pomyślnie", Snackbar.LENGTH_LONG).show()
             }
         }
     }

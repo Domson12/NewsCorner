@@ -70,10 +70,10 @@ class NewsFragment : Fragment() {
                     response.data?.let {
                         Log.i("MYTAG", "came here ${it.articles.toList().size}")
                         newsAdapter.differ.submitList(it.articles.toList())
-                        if (it.totalResults % 20 == 0) {
-                            pages = it.totalResults / 20
+                        pages = if (it.totalResults % 20 == 0) {
+                            it.totalResults / 20
                         } else {
-                            pages = it.totalResults / 20 + 1
+                            it.totalResults / 20 + 1
                         }
                         isLastPage = page == pages
                     }
@@ -131,12 +131,12 @@ class NewsFragment : Fragment() {
             val topPosition = layoutManager.findFirstVisibleItemPosition()
 
             val hasReachedToEnd = topPosition + visibleItems >= sizeOfTheCurrentList
-            val shouldPaginate = !isLoading && !isLastPage && hasReachedToEnd && isScrolling
-            if (shouldPaginate) {
+            val shouldPaginateBottom = !isLoading && !isLastPage && hasReachedToEnd && isScrolling
+
+            if (shouldPaginateBottom) {
                 page++
                 viewModel.getNewsHeadLines(country, page)
                 isScrolling = false
-
             }
         }
     }
@@ -146,6 +146,7 @@ class NewsFragment : Fragment() {
         fragmentNewsBinding.svNews.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 viewModel.searchNews("pl", p0.toString(), page)
+
                 viewSearchedNews()
                 return false
             }
@@ -159,15 +160,11 @@ class NewsFragment : Fragment() {
                 return false
             }
         })
-        fragmentNewsBinding.svNews.setOnCloseListener(object : SearchView.OnCloseListener {
-            override fun onClose(): Boolean {
-
-                initRecyclerView()
-                viewNewsList()
-                return false
-            }
-
-        })
+        fragmentNewsBinding.svNews.setOnCloseListener {
+            initRecyclerView()
+            viewNewsList()
+            false
+        }
     }
 
 
@@ -191,7 +188,7 @@ class NewsFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let {
-                        Toast.makeText(activity, "An error occurred : $it", Toast.LENGTH_LONG)
+                        Toast.makeText(activity, "Error : $it", Toast.LENGTH_LONG)
                             .show()
                     }
                 }
