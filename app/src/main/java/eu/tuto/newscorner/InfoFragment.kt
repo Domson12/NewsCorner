@@ -56,4 +56,9 @@ class InfoFragment : Fragment() {
             }
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+
+    }
 }

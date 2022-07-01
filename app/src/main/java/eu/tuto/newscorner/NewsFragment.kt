@@ -17,9 +17,7 @@ import eu.tuto.newscorner.data.util.Resource
 import eu.tuto.newscorner.databinding.FragmentNewsBinding
 import eu.tuto.newscorner.presentation.adapter.NewsAdapter
 import eu.tuto.newscorner.presentation.viewmodel.NewsViewModel
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class NewsFragment : Fragment() {
     private lateinit var viewModel: NewsViewModel
@@ -81,7 +79,7 @@ class NewsFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let {
-                        Toast.makeText(activity, "An error occurred : $it", Toast.LENGTH_LONG)
+                        Toast.makeText(activity, "Error : $it", Toast.LENGTH_LONG)
                             .show()
                     }
                 }
@@ -130,13 +128,19 @@ class NewsFragment : Fragment() {
             val visibleItems = layoutManager.childCount
             val topPosition = layoutManager.findFirstVisibleItemPosition()
 
+
             val hasReachedToEnd = topPosition + visibleItems >= sizeOfTheCurrentList
             val shouldPaginateBottom = !isLoading && !isLastPage && hasReachedToEnd && isScrolling
+
 
             if (shouldPaginateBottom) {
                 page++
                 viewModel.getNewsHeadLines(country, page)
                 isScrolling = false
+            } else if (!isLoading && isLastPage && topPosition == 0 && isScrolling && dy < 0) {
+                    page--
+                    viewModel.getNewsHeadLines(country, page)
+                    isScrolling = false
             }
         }
     }
@@ -145,6 +149,7 @@ class NewsFragment : Fragment() {
     private fun setSearchView() {
         fragmentNewsBinding.svNews.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
+
                 viewModel.searchNews("pl", p0.toString(), page)
 
                 viewSearchedNews()
