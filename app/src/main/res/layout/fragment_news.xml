@@ -4,14 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".NewsFragment">
+    tools:context=".NewsFragment"
+    android:background="@color/background">
 
 
     <SearchView
         android:id="@+id/svNews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/search_background"/>
+        android:background="@color/search_background"
+        android:searchIcon="@drawable/ic_baseline_search_on"
+        android:closeIcon="@drawable/ic_baseline_close_24"
+        android:searchHintIcon="@drawable/ic_baseline_search_off"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNews"

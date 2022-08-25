@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/background">
 
 
 
@@ -21,8 +22,8 @@
         android:id="@+id/bnv_news"
         android:layout_width="match_parent"
         android:background="@color/search_background"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
+        app:itemIconTint="@drawable/bottom_nav_color_selector"
+        app:itemTextColor="@drawable/bottom_nav_color_selector"
         app:itemIconSize="@dimen/_23sdp"
         android:layout_height="75dp"
         app:menu="@menu/bottom_menu" />
