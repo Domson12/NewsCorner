@@ -4,10 +4,10 @@
 
     <item
         android:id="@+id/newsFragment"
-        android:icon="@drawable/ic__new_24"
+        android:icon="@drawable/ic_baseline_fiber_new_24"
         android:title="@string/news_headlines" />
     <item
         android:id="@+id/savedFragment"
         android:title="@string/saved_news"
-        android:icon="@drawable/ic_save_24"/>
+        android:icon="@drawable/ic_baseline_save_24" />
 </menu>
